@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html ng-app="slfmadeApp" >
+<head>
+   
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <title>Slfmade | Инновационное спортивное полотенце с доставкой по Украине</title>
+	<link rel="stylesheet" href="css/style.css" type="text/css">   
+	<link rel="stylesheet" href="js/plugins/lightbox/css/lightbox.css">
+	<link rel="SHORTCUT ICON" href="img/favicon.ico" type="image/x-icon">
+</head>
+<body ng-cloak ng-controller="mainController">
+	<header>
+		<div class="wrapper">
+			<div class="logo"><img src="img/logo.png" title="Slfmade" alt="Slfmade" /></div>
+			<div class="title"><h1>Инновационное спортивное полотенце <strong>с доставкой по Украине</strong></h1></div>
+			<div class="phone">+38(044)562-79-32</div>
+		</div>
+	</header>
+
+	<div class="banner">
+		<timer day-stop="d" ></timer>
+	
+		<div class="form_1">
+		
+			<form name="orderForm"  novalidate ng-submit="getOrder()" ng-controller="orderController">
+				<div class="form_field">
+					<input type="text" name="name" class="input" placeholder="ИМЯ" ng-model="user1.name" required ng-minlength="2" ng-maxlength="40">
+					<div class="star">*</div>
+					
+					<span class="error" ng-show="orderForm.name.$dirty">
+						<span ng-show="orderForm.name.$error.required">обязательно для заполнения</span>
+						<span ng-show="orderForm.name.$error.minlength">слишком короткое имя</span>
+						<span ng-show="orderForm.name.$error.maxlength">слишком длинное имя</span>
+					</span>
+					
+				</div>
+				<div class="form_field">
+					<input type="phone" name="phone" class="input" placeholder="ТЕЛЕФОН" ng-model="user1.phone" required ng-minlength="7" ng-maxlength="20" ng-pattern="/^[-\s\.0-9()+]+$/i">
+					<div class="star">*</div>
+					<span class="error" ng-show="orderForm.phone.$dirty">
+						<span class="error" ng-show="orderForm.phone.$error.required">обязательно для заполнения</span>
+						<span class="error" ng-show="orderForm.phone.$error.pattern">некорректный номер телефона</span>
+						<span class="error" ng-show="orderForm.phone.$error.minlength && !orderForm.phone.$error.pattern">слишком короткий телефон</span>
+						<span class="error" ng-show="orderForm.phone.$error.maxlength && !orderForm.phone.$error.pattern">слишком длинный телефон</span>
+					</span>
+				</div>
+				<div class="form_field">
+					<input type="email" name="email" class="input" placeholder="E-MAIL" ng-model="user1.email" >
+					<span class="error" ng-show="orderForm.email.$dirty && orderForm.email.$error.email">не является электронным адресом</span>
+				</div>	
+				<div class="form_field">
+					<input type="radio" name="pack" value="1" id="pack1" ng-model="user1.pack">
+					<label for="pack1">Подарочная упаковка</label>
+				</div>
+				<div class="form_field">
+					<input type="radio" name="pack" value="0" id="pack2" ng-model="user1.pack">
+					<label for="pack2">Обычная упаковка</label>
+				</div>	
+				<div class="form_field">
+					<div class="loader" ng-show="loading"></div>
+					<button ng-disabled="orderForm.$invalid">Заказать</button>
+				</div>	
+				<div class="price_1 price" ng-show="user1.pack === 1">
+					<div class="active"><span>499</span> грн.</div>
+					<div class="unactive"><span>699</span> грн.</div>
+				</div>
+				<div class="price_2 price"  ng-show="user1.pack != 1">
+					<div class="active"><span>449</span> грн.</div>
+					<div class="unactive"><span>649</span> грн.</div>
+				</div>				
+			</form>	
+		</div>
+		<div class="main_slider my_slider">
+			<div class="slides">
+				<div class="item" ng-repeat="b in banner" ng-style="{'background-image' : b.image }">
+					<article><p ng-bind-html="b.text"></p></article>
+				</div>
+			</div>
+			<div class="left_button" ></div>
+			<div class="right_button" ></div>
+		</div>
+	</div>
+	<div class="points_block">
+		<div class="wrapper">
+			<ul class="points">
+				<li class="img1"><img src="img/img1.jpg"></li>
+				<li><img src="img/german_flag.jpg"><br>Дизайн из&nbsp;Германии</li>
+				<li class="img2"><img src="img/img2.jpg"></li>
+				<li>Бесплатная доставка</li>
+				<li class="img3"><img src="img/img3.jpg"></li>
+				<li>Первоклассное качество</li>
+				<li class="img4"><img src="img/img4.jpg"></li>
+				<li class="last">Подарочная упаковка</li>		
+			</ul>
+		</div>
+	</div>
+	<div class="media">
+		<div class="wrapper">
+			<div class="video">
+				<div class="title">Видео</div>
+				<p>Обзор преимуществ спортивного полотенца Slfmade</p>
+				
+				<iframe width="100%" height="253" src="https://www.youtube.com/embed/S2WJz9wH52E" frameborder="0" allowfullscreen></iframe>
+			</div>
+			<div class="photo">
+				<div class="title">Фото</div>
+				
+				<div class="photo_block">
+				
+					<div class="photo_slider my_slider">
+						<div class="slides">
+							<div class="item" ng-repeat="photo in photos"><a ng-href="img/{{photo.big}}" data-lightbox="photo_gallery" ><img ng-src="img/{{photo.small}}" /></a></div>
+						</div>
+					</div>
+					<div class="left_button" ></div>
+					<div class="right_button" ></div>
+				</div>
+			
+				<div class="title comments_title">Отзывы</div>
+				<div class="comments">
+					<ul>
+						<li ng-repeat="comment in comments">
+							<div class="name">{{comment.name}}</div>
+							<div ng-bind-html="comment.text"></div>
+						</li>					
+					</ul>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+	<div class="recommend">
+		<div class="wrapper">
+			<div class="title">Нас рекомендуют</div>
+				<div class="recommend_block">
+					<div class="recommend_slider my_slider">
+						<div class="slides">
+							<div class="item" ng-repeat="r in recommend">
+								<a ng-href="{{r.href}}" target="_blank">
+									<img ng-src="{{'img/'+r.icon}}" alt="{{r.name}}" />
+								</a>
+							</div>
+						</div>
+					</div>
+					<div class="left_button" ></div>
+					<div class="right_button" ></div>
+				</div>			
+			</div>
+	</div>	
+	
+     <footer>
+		<div class="wrapper">
+			<div class="copy">
+				<p>+38(044)562-79-32</p>
+				<p>ИННОВАЦИОННОЕ СПОРТИВНОЕ ПОЛОТЕНЦЕ С ДОСТАВКОЙ ПО УКРАИНЕ</p>
+				<p>&copy; 201 Slfmade</p>
+			</div>
+
+			<div class="babych">
+               	<a href="http://babychstudio.com/" class="babych-logo" target="_blank">d.babych</a>
+				Создано в 
+				<a href="http://babychstudio.com/" class="babych-link" target="_blank">Студии Дмитрия Бабича</a>
+			</div>			
+		</div>
+	</footer>
+
+	
+	<popup status="error">
+		Произошла ошибка, обратитесь по телефону: +38(044)562-79-32
+	</popup>
+
+	<popup status="sent">
+		Спасбо, Ваш заказ принят. <br>
+		С Вами свяжется наш менеджер в ближайшее время.
+	</popup>
+	
+	<popup status="incorrect">
+		Поля формы некорректно заполнены
+	</popup>	
+	
+	
+
+	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+	<script type="text/javascript" src="https://code.angularjs.org/1.4.7/angular.js"></script>
+	<script type="text/javascript" src="https://code.angularjs.org/1.4.7/angular-sanitize.min.js"></script>
+	<script type="text/javascript" src="https://code.angularjs.org/1.4.7/angular-animate.js"></script>
+	<script type="text/javascript" src="js/plugins/lightbox/js/lightbox-plus-jquery.min.js"></script>
+ 	<script type="text/javascript" src="js/plugins/slimscroll.js"></script>
+	<script type="text/javascript" src="js/plugins/slider.js"></script>
+	<script type="text/javascript" src="js/plugins/timer.js"></script>
+	<script type="text/javascript" src="js/controllers.js"></script>
+	<script type="text/javascript" src="js/directives.js"></script>
+	<script type="text/javascript" src="js/factories.js"></script>
+
+
+
+    <!--[if lt IE 9]>
+    <script>
+		$('body').html('<p style="text-align: center">Данная версия браузера не поддерживается</p>');
+	</script>
+    <![endif]-->	
+	
+</body>
+</html>
